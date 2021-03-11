@@ -10,7 +10,7 @@ assignments can be changed in the defines, but the following shows
 the default layout.  PB5 (Pin 1) shold probably be connected to Vcc
 through a resistor in the 10k- to 30k-ohm range.
 
-## Connection Diagram
+## Expected Connection Diagram
 
                 +====+
      Vcc -> PB5 |*   | Vcc
@@ -18,3 +18,17 @@ through a resistor in the 10k- to 30k-ohm range.
     LEDs -- PB4 |    | PB1 -- NC
             GND |    | PB0 <- MOSI
                 +====+
+
+## Direct Dependencies
+
+* [PlatformIO](https://platformio.org/)
+
+PlatformIO is used to manage the build environment.
+
+## Contribution guidelines
+
+* Use [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/)
+
+## For more information
+
+* James P. Howard, II <<james.howard@jhu.edu>>
