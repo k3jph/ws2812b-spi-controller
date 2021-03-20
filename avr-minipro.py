@@ -1,5 +1,7 @@
 Import("env")
 
+upload_protocol = env.subst("$UPLOAD_PROTOCOL")
+
 def before_fuses(source, target, env):
     print("before_fuses")
     fuses_section = "fuses"
@@ -17,23 +19,22 @@ def before_fuses(source, target, env):
     env.Execute(f"echo fuses_ext = {efuse} >> {fuses_file_name}")
     env.Execute(f"echo lock_byte = {lock} >> {fuses_file_name}")
 
-env.AddPreAction("fuses", before_fuses)
-
-env.Replace(
-    FUSESUPLOADER="minipro",
-    FUSESUPLOADERFLAGS = [
-        "-p",
-        "$BOARD_MCU",
-        "-c",
-        "config",
-        "-w",
-        "${BUILD_DIR}/${PROGNAME}.fuses.conf"
-    ],
-    SETFUSESCMD = "$FUSESUPLOADER $FUSESUPLOADERFLAGS",
-)
-
-upload_protocol = env.subst("$UPLOAD_PROTOCOL")
 if upload_protocol == "minipro":
+    env.AddPreAction("fuses", before_fuses)
+
+    env.Replace(
+        FUSESUPLOADER="minipro",
+        FUSESUPLOADERFLAGS = [
+            "-p",
+            "$BOARD_MCU",
+            "-c",
+            "config",
+            "-w",
+            "${BUILD_DIR}/${PROGNAME}.fuses.conf"
+        ],
+        SETFUSESCMD = "$FUSESUPLOADER $FUSESUPLOADERFLAGS",
+    )
+
     env.Replace(
         UPLOADER="minipro",
         MINIPROFLAGS=[
