@@ -31,7 +31,7 @@
 ;
 ;               +====+
 ;    Vcc -> PB5 |*   | Vcc
-;     NC <- PB3 |    | PB2 <- CLK
+;     NC <- PB3 |    | PB2 <- SCLK
 ;   LEDs -- PB4 |    | PB1 -- NC
 ;           GND |    | PB0 <- MOSI
 ;               +====+
@@ -40,10 +40,10 @@
 
 #include <avr/io.h>
 
-;  Give the ports we intend to use with functional names
+;  Give the ports we intend to use functional names
 #define MOSI    DDB0
 #define SCLK    DDB2
-#define DOUT    DDB3
+#define DOUT    DDB4
 
 .org        0x0000          ; Lay out the interrupt table
     rjmp    RESET           ; Let's get this party started
@@ -59,38 +59,10 @@ RESET:                      ; Reset the Attiny85
     sbi     DDRB, DOUT      ; Set DOUT as output
     cbi     PORTB, DOUT     ; Set DOUT LOW to clear the port
 
-; Assembly code auto-generated
-; by utility from Bret Mulvey
-; Delay 80 000 000 cycles
-; 10s at 8 MHz
-
-    ldi  r24, 2
-    ldi  r25, 150
-    ldi  r26, 216
-    ldi  r27, 9
-LX: dec  r27
-    brne LX
-    dec  r26
-    brne LX
-    dec  r25
-    brne LX
-    dec  r24
-    brne LX
-    rjmp 0
-
-
-    ldi     r17, 0x7F       ; Set OSCCAL to 20MHz
+    ldi     r17, 0x7F       ; Set OSCCAL to 8Mhz
     out     OSCCAL, r17
 
-    ldi     r24, 2          ; Let's let the clock settle out
-    ldi     r25, 75         ; Delay 1000 cycles
-LR: dec     r25             ; 50us at 20MHz
-    brne    LR
-    dec     r24
-    brne    LR
-    rjmp    +2
-
-WAIT_SCLK_HI:
+WAIT_SCLK_HI:               ; Wait for the next clock signal
     sbis    PINB, SCLK      ; Wait for CLK to go HIGH (rising edge)
     rjmp    WAIT_SCLK_HI
     cli                     ; Disable interrupts for RT performance
@@ -99,30 +71,24 @@ WAIT_SCLK_HI:
 
 SEND_1:                     ; Else send 1 to DOUT
     sbi     PORTB, DOUT     ; Set DOUT HIGH to start sequence
-    ldi     r24, 5          ; Delay 16 cycles
-L1: dec     r24             ; 800 ns at 20 MHz
-    brne    L1
-    nop
-    cbi     PORTB, DOUT     ; Set DOUT LOW to end sequence
-    lpm                     ; Delay 9 cycles
-    lpm                     ; 450 ns at 20 MHz
+    lpm                     ; 750 ns at 8 MHz
     lpm
+    cbi     PORTB, DOUT     ; Set DOUT LOW to end sequence
+    lpm                     ; 500 ns at 8 MHz
     rjmp    CLOSEOUT
 
-SEND_0:
+SEND_0:                     ; Send 0 to DOUT
     sbi     PORTB, DOUT     ; Set DOUT HIGH to start sequence
-    lpm                     ; Delay 8 cycles
-    lpm                     ; 400 ns at 20 MHz
-    rjmp    +2
+    lpm                     ; 375 ns at 8 MHz
     cbi     PORTB, DOUT     ; Set DOUT LOW to end sequence
-    ldi     r24, 5          ; Delay 17 cycles
-L0: dec     r24             ; 850 ns at 20 MHz
-    brne    L0
-    rjmp    +2
+    lpm                     ; 875 ns at 8 MHz
+    lpm
+    nop
 
 CLOSEOUT:                   ; Cleanup and go back to the start
     sei                     ; Re-enable interrupts
+
 WAIT_SCLK_LO: 
     sbic    PINB, SCLK      ; Wait for CLK to go LOW (falling edge)
     rjmp    WAIT_SCLK_LO
-    rjmp    WAIT_SCLK_HI
+    rjmp    WAIT_SCLK_HI    ; Start again on next bit
