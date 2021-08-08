@@ -7,7 +7,7 @@ Holder](https://sites.google.com/site/wayneholder/besting-ben-heck).
 
 The controller requires three pins on the ATtiny85.  The pin
 assignments can be changed in the defines, but the following shows
-the default layout.  PB5 (Pin 1) shold probably be connected to Vcc
+the default layout.  PB5 (Pin 1) should probably be connected to Vcc
 through a resistor in the 10k- to 30k-ohm range.
 
 ## Expected Connection Diagram
