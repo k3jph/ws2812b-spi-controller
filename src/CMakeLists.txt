@@ -8,7 +8,6 @@
 #
 # Matthias Kleemann
 ##########################################################################
-#SET(CMAKE_ASM_LINK_LIBRARY_FLAG "-nostartfiles -nostdlib -nodefaultlibs")
 
 SET(CMAKE_ASM_LINK_LIBRARY_FLAG "-nostartfiles -nostdlib -nodefaultlibs")
 SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_ASM_LINK_LIBRARY_FLAG}")
