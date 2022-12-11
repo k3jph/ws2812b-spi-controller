@@ -1,2 +1,5 @@
+.idea
 .pio
 .vscode
+cmake-build-*
+

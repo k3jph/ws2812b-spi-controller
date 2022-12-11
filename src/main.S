@@ -26,14 +26,14 @@
 ;
 ;  The controller requires three pins on the ATtiny85.  The pin
 ;  assignments can be changed below, but the following shows the
-;  default layout.  PB5 (Pin 1) shold probably be connected to Vcc
+;  default layout.  PB5 (Pin 1) shold probably be connected to +5V
 ;  through a resistor in the 10k- to 30k-ohm range.
 ;
 ;               +====+
-;    Vcc -> PB5 |*   | Vcc
+;    +5V -> PB5 |*   | +5V
 ;     NC <- PB3 |    | PB2 <- SCLK
-;   LEDs -- PB4 |    | PB1 -- NC
-;           GND |    | PB0 <- MOSI
+;   DOUT <- PB4 |    | PB1 -- NC
+;           GND |    | PB0 <- COPI
 ;               +====+
 
 #define __SFR_OFFSET 0
@@ -41,7 +41,7 @@
 #include <avr/io.h>
 
 ;  Give the ports we intend to use functional names
-#define MOSI    DDB0
+#define COPI    DDB0
 #define SCLK    DDB2
 #define DOUT    DDB4
 
@@ -54,7 +54,7 @@ RESET:                      ; Reset the Attiny85
     clr     r17             ; Set Clock Prescaler to 1:1 (CLKPR = 0)
     out     CLKPR, r17
 
-    cbi     DDRB, MOSI      ; Set MOSI as input
+    cbi     DDRB, COPI      ; Set COPI as input
     cbi     DDRB, SCLK      ; Set SCLK as input
     sbi     DDRB, DOUT      ; Set DOUT as output
     cbi     PORTB, DOUT     ; Set DOUT LOW to clear the port
@@ -66,7 +66,7 @@ WAIT_SCLK_HI:               ; Wait for the next clock signal
     sbis    PINB, SCLK      ; Wait for CLK to go HIGH (rising edge)
     rjmp    WAIT_SCLK_HI
     cli                     ; Disable interrupts for RT performance
-    sbis    PINB, MOSI      ; Skip if MOSI "1" bit
+    sbis    PINB, COPI      ; Skip if COPI "1" bit
     rjmp    SEND_0          ; Send 0 to DOUT
 
 SEND_1:                     ; Else send 1 to DOUT
