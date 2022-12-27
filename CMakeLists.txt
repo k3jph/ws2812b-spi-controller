@@ -25,7 +25,7 @@ set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/generic-gcc-avr.cmake)
 ##########################################################################
 # define the project
 ##########################################################################
-project(cmake-avr C CXX ASM)
+project(ws2812b-spi-controller ASM)
 
 ##########################################################################
 # status messages

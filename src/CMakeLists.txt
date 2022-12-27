@@ -12,4 +12,4 @@
 SET(CMAKE_ASM_LINK_LIBRARY_FLAG "-nostartfiles -nostdlib -nodefaultlibs")
 SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_ASM_LINK_LIBRARY_FLAG}")
 
-add_avr_executable(ws2818b-spi-controller-firmware main.S)
+add_avr_executable(${PROJECT_NAME}-firmware main.S)
