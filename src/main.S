@@ -20,7 +20,7 @@
 ;  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;  SOFTWARE.
 
-;  WS2818b SPI controller using the ATtiny85.  This is loosely based on
+;  WS2812b SPI controller using the ATtiny85.  This is loosely based on
 ;  the ATtiny10 Neopixel controller by Wayne Holder and available at
 ;  https://sites.google.com/site/wayneholder/besting-ben-heck
 ;

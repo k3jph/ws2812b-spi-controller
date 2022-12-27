@@ -1,6 +1,6 @@
-# WS2818B SPI Controller for ATtiny85
+# WS2812b SPI Controller for ATtiny85
 
-This code for a WS2818B SPI controller using the
+This code for a WS2812b SPI controller using the
 [ATtiny85](https://www.microchip.com/wwwproducts/en/ATtiny85).  It
 is loosely based on the [ATtiny10 Neopixel controller by Wayne
 Holder](https://sites.google.com/site/wayneholder/besting-ben-heck).
